@@ -1,0 +1,38 @@
+// bisection.cpp
+//
+// This program uses a recursive bisection algorithm to find a root
+// of a function passed into the algorithm. The bisection function
+// requires the function to evaluate, left and right endpoints of
+// the search interval, and the desired accuracy.
+//
+// Written by Michael S. Bell
+// msb5390@gmail.com
+// December 22, 2019
+
+#include <iostream>
+#include <string.h>
+#include "../include/bisection.h"
+using namespace std;
+
+double bisection(double f(double), double a, double b, double accuracy){
+  // Find the midpoint of the interval.
+  double midpt = (a + b) / 2.0;
+  
+  // Handle the base case first.
+  if (abs(f(midpt)) <= accuracy) {
+    return midpt;
+  }
+
+  // Search for root in left half of interval.
+  if (f(a)*f(midpt) < 0) {
+    return bisection(f, a, midpt, accuracy);
+  }
+  // Search for root in right half of interval.
+  else if (f(midpt)*f(b) < 0) {
+    return bisection(f, midpt, b, accuracy);
+  }
+  // If we get to this point, there are no roots in the specified interval:
+  else {
+      throw "No roots found in interval (" + to_string(a) + ", " + to_string(b) + ").\n";
+  }
+}
